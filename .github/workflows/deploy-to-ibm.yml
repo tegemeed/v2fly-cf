@@ -50,8 +50,8 @@ jobs:
         ---
         applications:
         - name: v2ws
-          memory: 64M
-          disk_quota: 64M
+          memory: 128M
+          disk_quota: 128M
           random-route: true
           command: ./v2ray
           buildpacks:
