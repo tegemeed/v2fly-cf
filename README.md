@@ -15,15 +15,22 @@
 4. Fork本项目，在你的项目地址下添加五个Secrets：
 
 CF_UUID_IBM
+
 CF_USER_IBM
+
 CF_PASSWORD_IBM
+
 CF_ORG_IBM
+
 CF_SPACE_IBM
+
 
 从上往下依次在内容区填入UUID, 邮箱，密码，组织名称（一般为邮箱），空间名称(一般为dev)
 
 5. 修改项目内.github/workflow里面的deploy to IBM文件。
+
 （1）修改crontab（可选）
+
 现在IBM限制了3天必须对服务器有操作，否则休眠。
 
 因此，我的Crontab设置了每天UTC 20:00自动更新部署，即对于我们中国时间UTC+8 来说，是凌晨四点自动更新部署。
@@ -35,28 +42,58 @@ CF_SPACE_IBM
 如果是美国地区的服务器，只需要添加一行空行（在哪都行），以测试workflow的结果是否正常。
 
 如果是英国地区的服务器，需要更改cf_api为：
+
 https://api.eu-gb.cf.cloud.ibm.com
 
 6.进Actions区查看输出。
 
 7 如果一切正常，去IBM云访问应用程序Url,复制下来。
+
 去掉"https://"和最后的"/"
 
 然后，去登录或者注册一个Cloudflare账号。
+
 Cloudflare Workers新建一个Worker
+
 按照IBMYes的设置即可。
+
+附带代码：
+
+addEventListener(
+"fetch",event => {
+let url=new URL(event.request.url);
+url.hostname="ibmyes.us-south.cf.appdomain.cloud";
+let request=new Request(url,event.request);
+event. respondWith(
+fetch(request)
+)
+}
+)
+
+
 
 8. 配置V2RayN
 
 地址：填写你筛选后的优质Cloudflare地址
+
 端口：443
+
 UUID；填写你在Secrets里添加的UUID.
+
 额外ID：64
+
 加密方式:Auto
+
 传输方式:ws
+
 底层传输安全:tls
+
 AllowSecure: false
+
 Host: 填写Cloudflare Workers地址，不要有https://和/
+
 Path: /
+
+
 
 9. All Done!
